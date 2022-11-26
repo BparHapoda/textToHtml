@@ -15,9 +15,9 @@ public enum LexemeType {
     BOLD_END ("</b>"),
     CROSS_START ("<s>"),            // зачеркнутый текст
     CROSS_END ("</s>"),
-    CROSS_BOLD_END("</b></i>"),                                   // жирный курсив
-    DOC_START("<html>\n<body>"),   //  обозначение html файла
-    DOC_END("</body>\n</html>"),// конец файла
+    CROSS_BOLD_START("<b><i>"),                                   // жирный курсив
+    DOC_START("<html><body>"),   //  обозначение html файла
+    DOC_END("</body></html>"),// конец файла
     PARAGRAPH_START("<p>"),         //  абзац
     PARAGRAPH_END("</p>"),
     TEXT("");   // просто текст

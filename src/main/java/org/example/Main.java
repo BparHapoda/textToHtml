@@ -115,7 +115,7 @@ public class Main {
             case ('*'):
                 if(text.charAt(index+1)=='*' & text.charAt(index+2)=='*')
                 {
-                    lexemes.add(new Lexeme(LexemeType.CROSS_BOLD_END));
+                    lexemes.add(new Lexeme(LexemeType.CROSS_BOLD_START));
                     index=index+3;
                     bold=false;
                     coursive=false;
@@ -204,6 +204,7 @@ File output = new File("output.html");
              ) {
             try {
                 fileWriter.write(lexeme.getText());
+          //      fileWriter.write("\n");
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
