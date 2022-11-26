@@ -100,8 +100,123 @@ public class Main {
     }
     public static void analyser(String text){
         ArrayList<Lexeme> lexemes =new ArrayList<>();
+        lexemes.add(new Lexeme(LexemeType.DOC_START));
         int index = 0 ;
 
+        boolean bold=false;
+        boolean coursive=false;
+        boolean cross=false;
+        boolean paragraph=false;
 
+        StringBuilder stringBuilder =new StringBuilder();
+        while (index<text.length()-1){
+        char c = text.charAt(index);
+        switch (c){
+            case ('*'):
+                if(text.charAt(index+1)=='*' & text.charAt(index+2)=='*')
+                {
+                    lexemes.add(new Lexeme(LexemeType.CROSS_BOLD_END));
+                    index=index+3;
+                    bold=false;
+                    coursive=false;
+                    continue;
+                }
+                else if(text.charAt(index+1)=='*')
+                {
+                    if(!bold){
+                    lexemes.add(new Lexeme(LexemeType.BOLD_START));
+                        bold=true;
+                    }
+                    else
+                    {
+                        lexemes.add(new Lexeme(LexemeType.BOLD_END));
+                        bold=false;
+                    }
+                    index=index+2;
+                    continue;
+                }
+                else
+                {
+                    if(!coursive){
+                        lexemes.add(new Lexeme(LexemeType.COURSIVE_START));
+                        coursive=true;
+                    }
+                    else
+                    {
+                        lexemes.add(new Lexeme(LexemeType.COURSIVE_END));
+                        coursive=false;
+                    }
+                }
+                index++;
+                continue;
+
+            case('~'):
+            {
+                if (text.charAt(index + 1)=='~') {
+                    if(!cross)
+                    {lexemes.add(new Lexeme(LexemeType.CROSS_START));
+                        cross=true;
+                    index=index+2;
+                    continue;
+                    }
+                    else {
+                        lexemes.add(new Lexeme(LexemeType.CROSS_END));
+                        cross=false;
+                        index=index+2;
+                            continue;
+                    }
+                }
+                }
+
+
+        }
+
+            boolean exp=text.charAt(index)=='*'||
+                    text.charAt(index)=='~'||
+                    text.charAt(index)=='\n';
+stringBuilder.delete(0,stringBuilder.length());
+        if(!exp)
+{
+    while (true)
+    {stringBuilder.append(text.charAt(index));
+      index++;
+       if (text.charAt(index)=='*'||
+               text.charAt(index)=='~'||
+               text.charAt(index)=='\n'){break;}
+    }
+
+
+}
+if (stringBuilder.length()==0){index++;}
+else {lexemes.add(new Lexeme(LexemeType.TEXT));
+lexemes.get(lexemes.size()-1).setText(stringBuilder.toString());}
+        }
+        lexemes.add(new Lexeme(LexemeType.DOC_END));
+        System.out.println(text);
+File output = new File("output.html");
+        FileWriter fileWriter= null;
+        try {
+            fileWriter = new FileWriter(output);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        for (Lexeme lexeme:lexemes
+             ) {
+            try {
+                fileWriter.write(lexeme.getText());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        try {
+            fileWriter.flush();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            fileWriter.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

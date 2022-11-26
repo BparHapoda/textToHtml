@@ -1,27 +1,31 @@
 package org.example;
 
+/**
+ * - *текст в курсивном начертании* -- курсив
+ * - **текст в полужирном начертании** -- полужирный
+ * - ~~зачёркнутый текст~~ -- зачёркивание
+ (***) должна трактоваться как "<b><i>
+ пустыми строками, следует обернуть в теги <p>...</p>
+ **/
+
 public enum LexemeType {
-    COURSIVE ("<i>","</i>"),
-    HALF_BOLD ("<b>","</b>"),
-    CROSS ("<s>","</s>"),
-    DOC("<html>\n<body>","</body>\n</html>"),
-    PARAGRAPH("<p>","</p>"),
-    TEXT,
-    EOF;
+    COURSIVE_START ("<i>"), //  курсив
+    COURSIVE_END ("</i>"),
+    BOLD_START ("<b>"),        // жирный
+    BOLD_END ("</b>"),
+    CROSS_START ("<s>"),            // зачеркнутый текст
+    CROSS_END ("</s>"),
+    CROSS_BOLD_END("</b></i>"),                                   // жирный курсив
+    DOC_START("<html>\n<body>"),   //  обозначение html файла
+    DOC_END("</body>\n</html>"),// конец файла
+    PARAGRAPH_START("<p>"),         //  абзац
+    PARAGRAPH_END("</p>"),
+    TEXT("");   // просто текст
 
-    String startTag;
-    String endTag;
-    String text;
-    LexemeType(String startTag,String endTag){
-        this.startTag=startTag;
-        this.endTag=endTag;
+    String tag;
+    LexemeType(String tag){
+        this.tag=tag;
     }
-    LexemeType(String text){
-        this.text=text;
-    }
- LexemeType(){}
 
-    public void setText(String text) {
-        this.text = text;
-    }
 }
+
